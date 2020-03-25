@@ -75,7 +75,7 @@ class Keen:
     def __addUniquenessConstraints(self):
         """Ensures that all rows and columns contain distinct values"""
         row_c = [Distinct([self.grid[(j,i)] for j in range(self.size)]) for i in range(self.size)]
-        col_c = [Distinct([self.grid[(i,j)] for i in range(self.size)]) for j in range(self.size)]
+        col_c = [Distinct([self.grid[(i,j)] for j in range(self.size)]) for i in range(self.size)]
         self.solver.add(row_c + col_c)
 
 k = Keen(5)
