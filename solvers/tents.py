@@ -8,6 +8,7 @@ class Tents:
     TREE = 2
 
     __NO_NEIGHBOR = 0
+    __MAX_TREES = 50 # If you increase this, you have to add more lines to __addTreeNeighborConstraint
 
     """Solver for the Keen logic puzzle: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/keen.html"""
     def __init__(self, treeGrid, columnCounts, rowCounts):
@@ -46,8 +47,10 @@ class Tents:
         sol = ""
         charMap = {
             Tents.EMPTY: ' ',
-            Tents.TENT: '\u25ec',
-            Tents.TREE: '\U0001f332',
+            #Tents.TENT: '\u25ec',
+            Tents.TENT: '^',
+            #Tents.TREE: '\U0001f332',
+            Tents.TREE: 'T',
         }
         for row in self.Solution():
             for space in row:
@@ -61,10 +64,10 @@ class Tents:
             for y in range(self.height):
                 g = self.grid[(x,y)]
                 n = self.neighbor[(x,y)]
-                self.solver.add(Or([g == Tents.EMPTY, g == self.TREE, g == Tents.TENT]))
+                self.solver.add(Or([g == 0, g == 1, g == 2]))
                 self.solver.add(Or([
-                    And([g == Tents.EMPTY, n == Tents.__NO_NEIGHBOR]),
-                    And([g != Tents.EMPTY, n != Tents.__NO_NEIGHBOR])]))
+                    And([g == 0, n == 0]),
+                    And([g != 0, n != 0])]))
 
     def __addTreeConstraints(self, treeGrid):
         """Adds constraints that trees are located where the grid specifics (and only there)"""
@@ -75,13 +78,15 @@ class Tents:
                 n = self.neighbor[(x,y)]   
                 if treeGrid[y][x]:
                     # This space is a tree
-                    self.solver.add(g == Tents.TREE)
-                    self.solver.add(n == nextNeighbor)  ## This is the problem!  Can only compare to immutables
+                    self.solver.add(g == 2)
+                    # TODO: The next two lines, if either is uncommented, cause UnSAT and I cannot understand why
+                    #AddIntEqualComparisonConstraint(self.solver, n, nextNeighbor)
+                    #self.solver.add(n == 1)
                     nextNeighbor = nextNeighbor + 1
                 else:
                     # This space is not a tree
-                    self.solver.add(g != Tents.TREE)
-                    self.solver.add(n == Tents.__NO_NEIGHBOR)
+                    self.solver.add(g != 2)
+
         self.treeCount = nextNeighbor - 1
 
     def __addNeighborConstraints(self):
@@ -98,7 +103,7 @@ class Tents:
                 nRight = self.neighbor[(x+1, y)]
                 nUp = self.neighbor[(x, y-1)]
                 nDown = self.neighbor[(x, y+1)]
-                isEmpty = (g == Tents.EMPTY)
+                isEmpty = (g == 0)
                 adjacentCount = If(And([n == nLeft, g != gLeft]), 1, 0) \
                     + If(And([n == nRight, g != gRight]), 1, 0) \
                     + If(And([n == nUp, g != gUp]), 1, 0) \
