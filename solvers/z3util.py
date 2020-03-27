@@ -1,4 +1,5 @@
 """Reusable helper functions for Z3 python wrappers"""
+from collections import defaultdict
 from z3 import *
 
 def IsOdd(i):
@@ -34,7 +35,7 @@ def Z3IntDict2D(width, height, prefix):
     height: Height of the grid (int)
     prefix: Unique string prefix to identify the Z3 variables
     """
-    d = {}
+    d = defaultdict(lambda: None)
     for x in range(width):
         for y in range(height):
             d[(x,y)] = Int(Z3IntDictKey(x,y,prefix))
