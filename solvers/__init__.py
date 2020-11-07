@@ -1,3 +1,4 @@
+from .alphametic import Alphametic
 from .keen import Keen
 from .magnets import Magnets
 from .tents import Tents
