@@ -5,11 +5,11 @@ from .z3util import *
 # Assert that each square is added to only a single constraint
 # Assert that every square is added to a constraint
 
-class Keen:
-    """Solver for the Keen logic puzzle: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/keen.html"""
+class KenKen:
+    """Solver for the KenKen logic puzzle: https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/keen.html"""
     def __init__(self, size):
         """Creates empty square puzzle.  size: Size of the square"""
-        self.__prefix = 'keen'
+        self.__prefix = 'kenken'
         self.size = size
         self.grid = Z3IntDict2D(size, size, self.__prefix)
         self.solver = Solver()

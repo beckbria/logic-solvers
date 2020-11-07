@@ -1,13 +1,13 @@
 from .context import solvers
-from solvers import Keen
+from solvers import KenKen
 import unittest
 
-class KeenTest(unittest.TestCase):
+class KenKenTest(unittest.TestCase):
     """Tests for the Keen solver"""
 
     def test5x5(self):
         # Create a 5x5 puzzle
-        k = Keen(5)
+        k = KenKen(5)
         k.AddDivision(2, (0,0), (0,1))
         k.AddDivision(2, (1,2), (1,3))
         k.AddDivision(2, (3,3), (4,3))
