@@ -78,6 +78,15 @@ class Alphametic:
             rem = self.__parseArgument(remainder)
             self.solver.add(divid % divis == rem)
 
+    def AddKnownLetter(self, letter, value):
+        """
+        Assigns a known value to a letter
+
+        letter: A single character string representing a letter
+        value: A numeric constant value known
+        """
+        self.solver.add(self.__variableForChar(letter[0]) == value)
+
     def __parseArgument(self, arg):
         """Parses an argument - either an alphametic string or an integer constant - into a form consumable by Z3"""
         if isinstance(arg, str):

@@ -3,7 +3,7 @@ from solvers import Alphametic
 import unittest
 
 class AlphameticTest(unittest.TestCase):
-    """Tests for the Keen solver"""
+    """Tests for the Alphametic solver"""
 
     def testDivision(self):
         a = Alphametic()
@@ -20,4 +20,10 @@ class AlphameticTest(unittest.TestCase):
         expectedSolution = {"P":0, "I": 1, "T": 2, "C": 3, "H": 4, "F": 5, "O": 6, "R": 7, "K": 8, "S": 9}
         self.assertEqual(a.Solution(), expectedSolution)
 
-
+    def testKnownLetters(self):
+        a = Alphametic()
+        a.AddSum(initial_value="CEYLON", addition="BLACK", result="KETTLE")
+        a.AddKnownLetter("N", 8)
+        a.AddKnownLetter("Y", 2)
+        expectedSolution = {"A":3, "O":1, "B":9, "T":0, "L":7, "K":6, "E":4, "C":5, "Y":2, "N":8}
+        self.assertEqual(a.Solution(), expectedSolution)
