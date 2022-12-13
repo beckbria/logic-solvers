@@ -46,7 +46,7 @@ class Sudoku:
         """
         Adds an ascending thermometer constraint
         
-        bulbToTip: a list of tuples [(x1,y1), (x2,y2)]
+        bulbToTip: a list of tuples [(x1,y1), (x2,y2), (x3,y3)]
         thermoclines: The number of thermoclines
         thermoclineDelta: the jump in value to be considered a thermocline
         """
@@ -54,8 +54,9 @@ class Sudoku:
         for n in range(1, len(bulbToTip)):
             second = self.__gridFromTuple(bulbToTip[n])
             first = self.__gridFromTuple(bulbToTip[n-1])
-            tcl = tcl + If(second - first >= thermoclineDelta, 1, 0)
             self.solver.add(second > first)
+            tcl = tcl + If((second - first) >= thermoclineDelta, 1, 0)
+
         if thermoclines >= 0:
             self.solver.add(tcl == thermoclines)
 
@@ -64,7 +65,7 @@ class Sudoku:
         """
         Adds an ascending thermometer constraint
         
-        bulbToTip: a list of lists of tuples [[(x1,y1), (x2,y2)], [(x3,y3), (x2,y2)]
+        bulbToTip: a list of lists of tuples [[(x1,y1), (x2,y2)], [(x1,y1), (x3,y3), (x4,y4)]
         thermoclines: The number of thermoclines
         thermoclineDelta: the jump in value to be considered a thermocline
         """
